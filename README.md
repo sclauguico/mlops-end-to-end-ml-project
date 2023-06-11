@@ -757,3 +757,12 @@ git push -u origin main
     ```
     
     ### VSCode Terminal
+    ```
+    	pip install -r requirements.txt
+    ```
+    ```
+	git status
+	git add .
+	git commit -m "Problem statement, EDA, modeling"
+	git push -u origin main
+    ```
