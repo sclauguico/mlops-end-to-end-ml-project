@@ -1059,3 +1059,233 @@ if __name__ == "__main__":
 ```
 
 ### VSCode Terminal
+
+```python
+python src/components/data_ingestion.py
+
+git status
+git add .
+git commit -m "Data transformation"
+git push -u origin main
+```
+
+### VSCode
+
+#model_trainer.py
+
+```python
+import os
+import sys
+from dataclasses import dataclass
+
+from catboost import CatBoostRegressor
+from sklearn.ensemble import (
+    AdaBoostRegressor,
+    GradientBoostingRegressor,
+    RandomForestRegressor,
+)
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.tree import DecisionTreeRegressor
+from xgboost import XGBRegressor
+
+from src.exception import CustomException
+from src.logger import logging
+from src.utils import save_object, evaluate_models
+
+@dataclass
+class ModelTrainerConfig:
+    trained_model_file_path: str = os.path.join("artifacts", "model.pkl")
+
+class ModelTrainer:
+    def __init__(self):
+        self.model_trainer_config = ModelTrainerConfig()
+
+    def initiate_model_trainer(self, train_array, test_array):
+        try:
+            logging.info("Splitting training and test input data.")
+            X_train, y_train, X_test, y_test = (
+                train_array[:, :-1],
+                train_array[:, -1],
+                test_array[:, :-1],
+                test_array[:, -1],
+            )
+
+            models = {
+                "Random Forest": RandomForestRegressor(),
+                "Decision Tree": DecisionTreeRegressor(),
+                "Gradient Boosting": GradientBoostingRegressor(),
+                "Linear Regression": LinearRegression(),
+                "XGBRegressor": XGBRegressor(),
+                "CatBoosting Regressor": CatBoostRegressor(verbose=False),
+                "AdaBoost Regressor": AdaBoostRegressor(),
+            }
+
+            model_report = evaluate_models(
+                X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models
+            )
+
+            # To get the best model score from dict
+            best_model_score = max(sorted(model_report.values()))
+
+            # To get the best model name from dict
+            best_model_name = list(model_report.keys())[
+                list(model_report.values()).index(best_model_score)
+            ]
+
+            best_model = models[best_model_name]
+
+            if best_model_score < 0.6:
+                raise CustomException("No best model found.")
+            logging.info("Best found model on both training and testing dataset.")
+
+            save_object(
+                file_path=self.model_trainer_config.trained_model_file_path, obj=best_model
+            )
+
+            predicted = best_model.predict(X_test)
+
+            r2_square = r2_score(y_test, predicted)
+            return r2_square
+
+        except Exception as e:
+            raise CustomException(e, sys)
+```
+
+### VSCode
+
+#utils.py
+
+```python
+import os
+import sys
+
+import numpy as np
+import pandas as pd
+import dill
+from sklearn.metrics import r2_score
+
+from src.exception import CustomException
+
+def save_object(file_path, obj):
+    try:
+        dir_path = os.path.dirname(file_path)
+
+        os.makedirs(dir_path, exist_ok=True)
+
+        with open(file_path, "wb") as file_obj:
+            dill.dump(obj, file_obj)
+
+    except Exception as e:
+        raise CustomException(e, sys)
+
+def evaluate_models(X_train, y_train, X_test, y_test, models):
+    try:
+        report = {}
+
+        for i in range(len(list(models))):
+            model = list(models.values())[i]
+
+            model.fit(X_train,y_train)
+
+            y_train_pred = model.predict(X_train)
+
+            y_test_pred = model.predict(X_test)
+
+            train_model_score = r2_score(y_train, y_train_pred)
+
+            test_model_score = r2_score(y_test, y_test_pred)
+
+            report[list(models.keys())[i]] = test_model_score
+
+        return report
+
+    except Exception as e:
+        raise CustomException(e, sys)
+```
+
+### VSCode
+
+#data_ingestion.py
+
+```python
+import sys
+import os
+from src.exception import CustomException
+from src.logger import logging
+import pandas as pd
+
+from sklearn.model_selection import train_test_split
+from dataclasses import dataclass
+
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
+
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
+
+@dataclass
+class DataIngestionConfig:
+    train_data_path: str = os.path.join('artifacts', "train.csv")
+    test_data_path: str = os.path.join('artifacts', "test.csv")
+    raw_data_path: str = os.path.join('artifacts', "data.csv")
+
+class DataIngestion:
+    def __init__(self):
+        self.ingestion_config = DataIngestionConfig()
+
+    def initiate_data_ingestion(self):
+        logging.info("Entered the data ingestion method or component.")
+
+        try:
+            df = pd.read_csv('notebook/data/stud.csv')
+            logging.info('Read the dataset as dataframe.')
+
+            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
+
+            df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
+
+            logging.info("Train test split initiated.")
+            train_set, test_set = train_test_split(df, test_size=0.2, random_state=42)
+
+            train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
+            test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
+
+            logging.info("Ingestion of the data is completed.")
+
+            return (
+                self.ingestion_config.train_data_path,
+                self.ingestion_config.test_data_path
+            )
+
+        except Exception as e:
+            raise CustomException(e, sys)
+
+if __name__ == "__main__":
+    obj = DataIngestion()
+    train_data, test_data = obj.initiate_data_ingestion()
+
+    data_transformation = DataTransformation()
+    train_arr, test_arr, _ = data_transformation.initiate_data_transformation(train_data, test_data)
+
+    model_trainer = ModelTrainer()
+    print(model_trainer.initiate_model_trainer(train_arr, test_arr))
+```
+
+### VSCode
+
+.gitignore
+
+1. Correct the .artifacts to .artifacts/ under # Environments
+
+### VSCode Terminal
+
+```
+python src/components/data_ingestion.py
+
+git status
+git add .
+git commit -m "Model trainer"
+git push -u origin main
+```
