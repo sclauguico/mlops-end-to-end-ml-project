@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 from src.exception import CustomException
 from src.logger import logging
 import pandas as pd
@@ -28,7 +28,7 @@ class DataIngestion:
 
         try:
             df = pd.read_csv('notebook/data/stud.csv')
-            logging.info('Read the dataset as dataframe.')
+            logging.info('Read the dataset as a dataframe.')
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
 
