@@ -1,0 +1,13 @@
+[ 2023-06-14 09:55:27,979 ] 187 werkzeug - WARNING -  * Debugger is active!
+[ 2023-06-14 09:55:27,991 ] 187 werkzeug - INFO -  * Debugger PIN: 335-766-295
+[ 2023-06-14 09:55:41,474 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:41] "[35m[1mGET / HTTP/1.1[0m" 500 -
+[ 2023-06-14 09:55:41,625 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:41] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:55:41,629 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:41] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:55:41,819 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:41] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:55:41,858 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:41] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:55:44,528 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:44] "[35m[1mGET / HTTP/1.1[0m" 500 -
+[ 2023-06-14 09:55:44,663 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:44] "[36mGET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:55:44,680 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:44] "[36mGET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:55:44,798 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:44] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:55:44,845 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:55:44] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:57:59,811 ] 187 werkzeug - INFO -  * Detected change in 'c:\\users\\sclau\\documents\\00-portfolio\\mlops\\app.py', reloading

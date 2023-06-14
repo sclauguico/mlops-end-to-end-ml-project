@@ -23,7 +23,6 @@ from src.utils import save_object, evaluate_models
 class ModelTrainerConfig:
     trained_model_file_path: str = os.path.join("artifacts", "model.pkl")
 
-
 class ModelTrainer:
     def __init__(self):
         self.model_trainer_config = ModelTrainerConfig()
@@ -87,9 +86,10 @@ class ModelTrainer:
             }
 
             model_report = evaluate_models(
-                X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test, models=models, param=params
+                X_train = X_train, y_train = y_train, X_test = X_test, y_test = y_test, 
+                models = models, param = params
             )
-            
+
             # To get the best model score from dict
             best_model_score = max(sorted(model_report.values()))
 
@@ -105,7 +105,7 @@ class ModelTrainer:
             logging.info("Best found model on both training and testing dataset.")
 
             save_object(
-                file_path=self.model_trainer_config.trained_model_file_path, obj=best_model
+                file_path = self.model_trainer_config.trained_model_file_path, obj=best_model
             )
 
             predicted = best_model.predict(X_test)

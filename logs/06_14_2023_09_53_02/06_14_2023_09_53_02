@@ -1,0 +1,8 @@
+[ 2023-06-14 09:53:03,189 ] 187 werkzeug - WARNING -  * Debugger is active!
+[ 2023-06-14 09:53:03,429 ] 187 werkzeug - INFO -  * Debugger PIN: 335-766-295
+[ 2023-06-14 09:53:09,376 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:53:09] "[35m[1mGET / HTTP/1.1[0m" 500 -
+[ 2023-06-14 09:53:09,508 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:53:09] "GET /?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1" 200 -
+[ 2023-06-14 09:53:09,557 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:53:09] "GET /?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1" 200 -
+[ 2023-06-14 09:53:09,617 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:53:09] "GET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1" 200 -
+[ 2023-06-14 09:53:09,645 ] 187 werkzeug - INFO - 127.0.0.1 - - [14/Jun/2023 09:53:09] "[36mGET /?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+[ 2023-06-14 09:54:28,071 ] 187 werkzeug - INFO -  * Detected change in 'C:\\Users\\sclau\\Documents\\00-portfolio\\mlops\\app.py', reloading
